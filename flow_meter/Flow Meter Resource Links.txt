@@ -1,0 +1,18 @@
+Math for flow calculations:
+https://wiki.seeedstudio.com/Water-Flow-Sensor/
+
+GPIO initialization:
+https://www.youtube.com/watch?v=bMrSYEAVLwM
+https://github.com/ravra/waterFlowMeter/blob/master/waterFlowMeter-shared.py
+
+GPIO initialization, time method, & writing to file
+https://www.youtube.com/watch?v=wpenAP8gN3c
+
+GPIO initialization:
+https://tutorials-raspberrypi.com/reading-out-the-flow-meter-water-flow-sensor-on-the-raspberry-pi/
+
+RPi.GPIO documentation:
+https://sourceforge.net/p/raspberry-gpio-python/wiki/Examples/
+
+More RPi.GPIO documentation: (not used)
+https://tieske.github.io/rpi-gpio/modules/GPIO.html#add_event_detect
