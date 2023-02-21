@@ -7,3 +7,12 @@ from wds-api.crud.base import CRUDBase
 from wds-api.models.item import Item
 from wds-api.schemas.item import ItemCreate, ItemUpdate
 
+
+class crud_wds(CRUDBase[Item, ItemCreate, ItemUpdate]):
+
+
+
+
+
+
+item = CRUDItem(Item)
