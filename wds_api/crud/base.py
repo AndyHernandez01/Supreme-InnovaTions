@@ -21,7 +21,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     
   #Returns all data from database with inputed ID
   def get(self, db: Session, id: Any) -> Optional[ModelType]: 
-    return db.query(self.model).filter(self.model.id == id).all()
+    return db.query(self.model).filter(self.model.wds_serial == id).first() #id -> wds_serial
   
   #Gets multiple tables from the databse.
   def get_multi(self, db: Session, *, skip: int=0, limit: int = 100) -> List[ModelType]:
@@ -42,9 +42,8 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
       update_data = obj_in
     else:
       update_data = obj_in.dict(exclude_unset=True)
-    for field in obj_data:
-      if field in update_data:
-        setattr(db_obj, field, update_data[field])
+    for field, v in update_data.items():
+      setattr(db_obj, field, v)
     db.add(db_obj)
     db.commit()
     db.refresh(db_obj)

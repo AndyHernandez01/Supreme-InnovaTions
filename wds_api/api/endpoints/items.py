@@ -30,4 +30,16 @@ def create_item(
         )->Any:
     item = crud.wds.create_by_wds(db, obj_in=item_in, wds_serial=wds_serial)
     return item
+    
+@router.put("/{wds_serial}", response_model=schemas.Item)
+def update_item(        
+        *,
+        db: Session = Depends(deps.get_db),
+        item_in: schemas.ItemCreate,
+        wds_serial: int
+        )->Any:
+    #Gets DB entry, then updates
+    item = crud.wds.get(db=db, id=wds_serial)
+    item = crud.wds.update(db=db,db_obj=item, obj_in=item_in)
+    return item
 
