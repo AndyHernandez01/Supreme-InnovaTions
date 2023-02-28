@@ -42,4 +42,14 @@ def update_item(
     item = crud.wds.get(db=db, id=wds_serial)
     item = crud.wds.update(db=db,db_obj=item, obj_in=item_in)
     return item
-
+@router.delete("/{wds_serial}", response_model=schemas.Item)
+def delete_item(
+  *,
+  db: Session = Depends(deps.get_db),
+  wds_serial: int,
+)->Any:
+    item = crud.wds.get(db=db, id=wds_serial)
+    if not item:
+      raise HTTPException(status_code=404, detail="Item not found")
+    item = crud.wds.remove(db=db,id=wds_serial)
+    return item
