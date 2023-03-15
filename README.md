@@ -8,14 +8,17 @@ IoT connectivity for Biosure Devices
 All python packages and environments are automatically managed my Python-Poetry
 
 * Start with docker-compose build:
-This will install all necesarry images for the containers
-'''bash
+
+```bash
 docker-compose build
-'''
+```
+This will install all necesarry images for the containers
+
 * Now run Docker Compose to start the stack
-'''bash
+
+```bash
 docker-compose up -d
-'''
+```
 
 *You can now interact with the API through HTTP calls (curl) or localhost:8000/docs
 
