@@ -13,20 +13,26 @@ def read(
         db: Session = Depends(deps.get_db),
         skip: int = 0, #Where are we starting in the table
         limit: int = 100, #How many values are we outputting
+        search: str = '',
         )-> Any:
 
     #Retrieving items
-    items = crud.wds.get_multi(db, skip=skip, limit=limit)
+    items = crud.wds.get_multi(db, skip=skip, search=search, limit=limit)
     
 
     return items
-
+@router.get("/loc")
+def read_loc(
+        db: Session = Depends(deps.get_db)
+        ):
+        location = crud.wds.get_all_locations(db)
+        return location
 @router.post("/", response_model=schemas.Item)
 def create_item(
         *,
         db: Session = Depends(deps.get_db),
         item_in: schemas.ItemCreate,
-        wds_serial: int
+        wds_serial: str
         )->Any:
     item = crud.wds.create_by_wds(db, obj_in=item_in, wds_serial=wds_serial)
     return item
@@ -36,7 +42,7 @@ def update_item(
         *,
         db: Session = Depends(deps.get_db),
         item_in: schemas.ItemCreate,
-        wds_serial: int
+        wds_serial: str
         )->Any:
     #Gets DB entry, then updates
     item = crud.wds.get(db=db, id=wds_serial)
