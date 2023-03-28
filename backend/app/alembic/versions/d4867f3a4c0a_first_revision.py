@@ -7,10 +7,13 @@ Create Date: 2019-04-17 13:53:32.978401
 """
 from alembic import op
 import sqlalchemy as sa
+import savage as sv
 
+from app.db.session import engine
+from app.models.item import Item, ItemHistory
 
 # revision identifiers, used by Alembic.
-revision = "d4867f3a4c0a"
+revision = "d4867f3a4c0b"
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -27,11 +30,34 @@ def upgrade():
         sa.Column("location", sa.String(), nullable=False),
         sa.Column("time_created", sa.DateTime(timezone=True)),
         sa.Column("last_updated", sa.DateTime(timezone=True)),
+        sa.Column("version_id", sa.BigInteger(), nullable=True),
         sa.PrimaryKeyConstraint("wds_serial"),
     )
     op.create_index(op.f("ix_func_status"), "item", ["func_status"], unique=False)
-    op.create_index(op.f("ix_wds_serial"), "item", ["wds_serial"], unique=True)
+    op.create_index(op.f("ix_wds_serial"), "item", ["wds_serial"], unique=False)
     op.create_index(op.f("ix_time_updated"), "item", ["last_updated"], unique=False)
+
+    op.create_table(
+        "itemhistory",
+        sa.Column("user_id", sa.Integer(), nullable=False),
+        sa.Column("wds_serial", sa.String(), nullable=False),
+        sa.Column("version_id", sa.BigInteger(), nullable=True),
+        #sa.Column("func_status", sa.String(), nullable=True),
+        #sa.Column("accum_sys_time", sa.Integer(), nullable=True),
+        #sa.Column("accum_standby", sa.Integer(), nullable=True),
+        #sa.Column("location", sa.String(), nullable=False),
+        #sa.Column("time_created", sa.DateTime(timezone=True)),
+        #sa.Column("last_updated", sa.DateTime(timezone=True)),
+        sa.ForeignKeyConstraint(["wds_serial"], ["item.wds_serial"],),
+        sa.PrimaryKeyConstraint("user_id"),
+    )
+    op.create_index(op.f("ix_user_id"), "itemhistory", ["user_id"], unique=True)
+
+    sv.init()
+    Item.register(ItemHistory, engine.connect())
+    #op.create_index(op.f("ix_func_status"), "itemhistory", ["func_status"], unique=False)
+    #op.create_index(op.f("ix_wds_serial"), "itemhistory", ["wds_serial"], unique=False)
+    #op.create_index(op.f("ix_time_updated"), "itemhistory", ["last_updated"], unique=False)
     # ### end Alembic commands ###
 
 
@@ -41,4 +67,9 @@ def downgrade():
     op.drop_index(op.f("ix_item_id"), table_name="item")
     op.drop_index(op.f("ix_item_description"), table_name="item")
     op.drop_table("item")
+
+    op.drop_index(op.f("ix_itemhistory_title"), table_name="itemhistory")
+    op.drop_index(op.f("ix_itemhistory_id"), table_name="itemhistory")
+    op.drop_index(op.f("ix_itemhistory_description"), table_name="itemhistory")
+    op.drop_table("itemhistory")
     # ### end Alembic commands ###

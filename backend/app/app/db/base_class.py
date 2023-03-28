@@ -1,4 +1,5 @@
-from sqlalchemy.ext.declarative import as_declarative, declared_attr
+from sqlalchemy.ext.declarative import as_declarative, declared_attr, declarative_base
+from app.db.session import engine
 
 @as_declarative()
 class Base:

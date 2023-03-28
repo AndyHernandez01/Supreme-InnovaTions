@@ -8,6 +8,7 @@ from app.models.item import Item
 from app.schemas.item import ItemCreate, ItemUpdate
 
 
+
 class CRUDItem(CRUDBase[Item, ItemCreate, ItemUpdate]):
     def get_multi(
         self, db: Session, *, search: str = '', skip: int = 0, limit: int = 100

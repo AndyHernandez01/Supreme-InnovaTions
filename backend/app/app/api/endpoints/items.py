@@ -7,7 +7,6 @@ from app import crud, models, schemas
 from app.api import deps
 
 router = APIRouter()
-
 @router.get("/")
 def read(
         db: Session = Depends(deps.get_db),
@@ -59,3 +58,4 @@ def delete_item(
       raise HTTPException(status_code=404, detail="Item not found")
     item = crud.wds.remove(db=db,id=wds_serial)
     return item
+

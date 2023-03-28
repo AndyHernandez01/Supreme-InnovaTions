@@ -13,6 +13,7 @@ class ItemCreate(ItemBase):
     accum_standby: int
     location: str
 
+
 class ItemUpdate(ItemBase):
     pass
 
